@@ -1,4 +1,4 @@
-const posts = require("../routes/posts")
+const posts = require("../routes/routesPosts");
 
 module.exports.render = function(post){
     return{
@@ -7,7 +7,6 @@ module.exports.render = function(post){
         likes: post.likes,
         id_usuario: post.id_usuario
     }
-
 }
 module.exports.renderMany = function(post){
     return posts.map(render)
