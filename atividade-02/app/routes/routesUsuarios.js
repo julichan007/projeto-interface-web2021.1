@@ -1,13 +1,13 @@
 const controller = require("../controllers/controllersUsuarios");
 
 module.exports = function(app){
-    app.get("/api/usuarios", controller.listarUsuarios);
+    app.get("/usuarios", controller.listarUsuarios);
 
-    app.get("/api/usuarios", controller.buscarUsuarios);
+    app.get("/usuarios", controller.buscarUsuarios);
 
-    app.post("/api/usuarios", controller.inserirUsuarios);
+    app.post("/usuarios", controller.inserirUsuario);
 
-    app.delete("/api/usuarios/;id",controller.removerUsuarios);
+    app.delete("/usuarios/:id",controller.removerUsuario);
 
-    app.get("/api/usuarios", controller.obterUsuarios);
+    app.get("/usuarios/:id/post", controller.obterPostUsuario);
 }

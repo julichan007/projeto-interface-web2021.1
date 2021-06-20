@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 module.exports = function(){
-    let Schema = mongoose.Schema({
+    let schema = mongoose.Schema({
         texto:{
             type: String,
             require: true

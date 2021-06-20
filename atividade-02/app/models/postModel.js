@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
-const { schema } = require('./comentario');
+
 
 module.exports =  function(){
-    let Schema = mongoose.Schema({
+    let schema = mongoose.Schema({
         texto:{
             type: String,
             require: true
@@ -22,5 +22,5 @@ module.exports =  function(){
             require: true
         },
     })
-    return mongoose.model("Post", schema);
+    return mongoose.model("Post",schema);
 }();

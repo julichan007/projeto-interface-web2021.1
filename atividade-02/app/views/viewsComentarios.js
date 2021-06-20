@@ -1,6 +1,4 @@
-const comentarios = require("../routes/routesComentario")
-
-module.exports.render = function(comentario){
+function render (comentario){
     return{
         id: comentario._id,
         texto: comentario.texto,
@@ -8,6 +6,10 @@ module.exports.render = function(comentario){
         id_usuario: comentario.id_usuario
     }
 }
-module.exports.renderMany = function(comentarios){
+
+module.exports.render = render;
+
+function renderMany(comentarios){
     return comentarios.map(render)
 }
+module.exports.renderMany = renderMany;

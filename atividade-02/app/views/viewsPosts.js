@@ -1,6 +1,4 @@
-const posts = require("../routes/routesPosts");
-
-module.exports.render = function(post){
+function render(post){
     return{
         id: post._id,
         texto: post.texto,
@@ -8,6 +6,10 @@ module.exports.render = function(post){
         id_usuario: post.id_usuario
     }
 }
-module.exports.renderMany = function(post){
+
+module.exports.render = render;
+
+ function renderMany(post){
     return posts.map(render)
 }
+module.exports.renderMany = renderMany;

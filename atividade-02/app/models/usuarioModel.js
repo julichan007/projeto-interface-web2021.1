@@ -11,7 +11,7 @@ module.exports =  function(){
             require: true,
         },
         senha:{
-            type: "",
+            type: String,
             require: true
         }
     })

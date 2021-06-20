@@ -13,7 +13,9 @@ module.exports.listarUsuarios = function(req, res){
         function(error){
             res.status(500).json({
                 mensagem: "Nao foi possovel listar", error: error
+               
             })
+        console.log(error)
         }
     )
 }
