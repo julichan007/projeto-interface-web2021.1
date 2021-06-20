@@ -7,7 +7,7 @@ module.exports.listarComentarios =  function(req,res){
 
     promise.then(
         function(comentario){
-            res.status(200).json(ViewsComentario.renderMany(Comentario))
+            res.status(200).json(ViewsComentario.renderMany(comentario))
         }  
     ).catch(
         function (error){
