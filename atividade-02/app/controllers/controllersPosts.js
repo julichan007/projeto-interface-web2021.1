@@ -7,8 +7,8 @@ module.exports.listarPosts = function(req, res){
     let promise = Post.find().exec();
 
     promise.then(
-        function(posts){
-            res.status(200).json(ViewPost.renderMany(posts))
+        function(post){
+            res.status(200).json(ViewPost.renderMany(post))
         }
     ).catch(
         function (error){
