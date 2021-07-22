@@ -4,6 +4,7 @@ const Comentario = require("../models/comentarioModel")
 const ViewComentario = require("../views/viewsComentarios")
 
 module.exports.listarPosts = function(req, res){
+
     let promise = Post.find().exec();
 
     promise.then(
@@ -56,8 +57,8 @@ module.exports.obterComentarioID = function(req, res){
     let promise = Comentario.find({id_post: idPost}).exec()
 
     promise.then(
-        function(comentario){
-            res.json(ViewComentario.renderMany(comentarios))
+        function(post){
+            res.json(ViewComentario.renderMany(post))
         }
     ).catch(
         function(error){

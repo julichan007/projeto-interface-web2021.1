@@ -3,11 +3,12 @@ const ViewsComentario = require("../views/viewsComentarios")
 
 //listar comentarios
 module.exports.listarComentarios =  function(req,res){
+    
     let promise = Comentario.find().exec();
 
     promise.then(
-        function(comentario){
-            res.status(200).json(ViewsComentario.renderMany(comentario))
+        function(post){
+            res.status(200).json(ViewsComentario.renderMany(post))
         }  
     ).catch(
         function (error){
@@ -53,8 +54,8 @@ module.exports.deleteComentarios = function(req, res){
     let promise = Comentario.findByIdAndDelete(id_)
 
     promise.then(
-        function(comentario){
-            res.status(200).json(ViewsComentario.render(comentario))
+        function(post){
+            res.status(200).json(ViewsComentario.render(post))
         }
     ).catch(
         function(error){

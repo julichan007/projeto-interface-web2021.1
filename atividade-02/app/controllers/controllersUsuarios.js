@@ -3,25 +3,9 @@ const Post =  require("../models/postModel")
 const ViewPost = require("../views/viewsPosts")
 const View = require("../views/viewsUsuarios")
 
-module.exports.listarUsuarios = function(req, res){
-    let promise = Usuario.find().exec()
-    promise.then(
-        function(usuarios){
-            res.status(200).json(View.renderMany(usuarios))
-        }
-    ).catch(
-        function(error){
-            res.status(500).json({
-                mensagem: "Nao foi possovel listar", error: error
-               
-            })
-        console.log(error)
-        }
-    )
-}
 module.exports.inserirUsuario = function(req, res){
-    let usuario = req.body
-    let promise = Usuario.create(usuario)
+    let usuario = req.body;
+    let promise = Usuario.create(usuario);
 
     promise.then(
         function(usuario){
@@ -32,6 +16,23 @@ module.exports.inserirUsuario = function(req, res){
             res.status(400).json({
                 mensagem: "Deu erro, tente novamente", error: error
             })
+        }
+    )
+}
+
+module.exports.listarUsuarios = function(req, res){
+    let promise = Usuario.find().exec()
+    promise.then(
+        function(usuario){
+            res.status(200).json(View.renderMany(usuario))
+        }
+    ).catch(
+        function(error){
+            res.status(500).json({
+                mensagem: "Nao foi possivel listar", error: error
+               
+            })
+        console.log(error)
         }
     )
 }
@@ -75,8 +76,8 @@ module.exports.obterPostUsuario =  function(req, res){
     let promise = Post.find({id_usuario: id_usuario})
 
     promise.then(
-        function(posts){
-            res.json(ViewPost.renderMany(posts))
+        function(post){
+            res.json(ViewPost.renderMany(post))
         }
     ).catch(
         function(error){

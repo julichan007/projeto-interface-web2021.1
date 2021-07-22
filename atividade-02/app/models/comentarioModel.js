@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 module.exports = function(){
     let schema = mongoose.Schema({
         texto:{
-            type: String,
+            type: "String",
             require: true
         },
         id_post:{

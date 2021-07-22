@@ -3,15 +3,15 @@ const mongoose = require ("mongoose");
 module.exports =  function(){
     let schema =  mongoose.Schema({
         nome: {
-            type: String,
+            type: "String",
             require: true
         },
         email: {
-            type: String,
+            type: "String",
             require: true,
         },
         senha:{
-            type: String,
+            type: "String",
             require: true
         }
     })
