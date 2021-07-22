@@ -11,9 +11,11 @@ module.exports.listarComentarios =  function(req,res){
         }  
     ).catch(
         function (error){
+            res.status(500).json({
                 mensagem:"Não foi possivel listar os comentarios.", error: error
             })
-    )
+        }
+    )    
 }
 //buscar comentarios por id
 module.exports.buscarComentarios = function(req, res){
