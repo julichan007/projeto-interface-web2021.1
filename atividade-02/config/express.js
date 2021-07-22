@@ -1,10 +1,10 @@
-const express = require('express')
-const routerUsuarios = require("../app/routes/usuarios")
-//const bodyParser = require("body-parser")
+const express = require('express');
+const routerUsuarios = require("../app/routes/routesUsuarios");
+const bodyParser = require("body-parser");
 //import bodyParser from 'body-parser'
 
-const routerPosts = require("../app/routes/posts")
-const routerComentarios = require("../app/routes/comentarios")
+const routerPosts = require("../app/routes/routesPosts");
+const routerComentarios = require("../app/routes/routesComentario");
 
 module.exports = function(){
     let app = express()
