@@ -1,10 +1,44 @@
-const Post = require("../models/postModel")
-const ViewPost = require("../views/viewsPosts")
-const Comentario = require("../models/comentarioModel")
-const ViewComentario = require("../views/viewsComentarios")
+const Post = require("../models/postModel");
+const ViewPost = require("../views/viewsPosts");
+const Comentario = require("../models/comentarioModel");
+const ViewComentario = require("../views/viewsComentarios");
+const jwt = require("jsonwebtoken");
+
+
+
+module.exports.inserirPost = function(req, res){
+    let texto = req.body.texto;
+    let likes = req.body.likes;
+    
+    let token = req.headers.token;
+    let payload = jwt.decode(token);
+    let id_usuario_logado = payload.id;
+
+
+    let promise = Post.create({
+        texto: texto, 
+        likes: likes, 
+        id_usuario: id_usuario_logado
+    });
+    promise.then(
+        function(post){
+            res.status(201).json(ViewPost.render(post))
+        }
+    ).catch(
+        function(error){
+            res.status(500).json({
+                mensagem: "Não foi possivel inserir", error: error
+            })
+        }
+    )
+}
 
 module.exports.listarPosts = function(req, res){
-    let promise = Post.find().exec();
+    let token = req.headers.token;
+    let payload = jwt.decode(token);
+    let id_usuario_logado = payload.id;
+
+    let promise = Post.find({id_usuario: id_usuario_logado}).exec();
 
     promise.then(
         function(post){
@@ -20,8 +54,8 @@ module.exports.listarPosts = function(req, res){
 }
 
 module.exports.buscarPost = function(req,res){
-    let id_ = req.params.id
-    let promise  = Post.findById(id_).exec()
+    let id = req.params.id
+    let promise  = Post.findById(id).exec()
 
     promise.then(
         function(post){
@@ -36,28 +70,13 @@ module.exports.buscarPost = function(req,res){
     )
 }
 
-module.exports.inserirPost = function(req, res){
-    let promise = Post.create(req.body)
-
-    promise.then(
-        function(post){
-            res.status(201).json(ViewPost.render(post))
-        }
-    ).catch(
-        function(error){
-            res.status(500).json({
-                mensagem: "Não foi possivel inserir", error: error
-            })
-        }
-    )
-}
 module.exports.obterComentarioID = function(req, res){
     let idPost = req.params.id
     let promise = Comentario.find({id_post: idPost}).exec()
 
     promise.then(
-        function(comentario){
-            res.json(ViewComentario.renderMany(comentarios))
+        function(post){
+            res.status(200).json(ViewComentario.renderMany(post));
         }
     ).catch(
         function(error){
@@ -68,17 +87,36 @@ module.exports.obterComentarioID = function(req, res){
     )
 }
 module.exports.deletePost = function(req, res){
-    let id_ = req.params.id
-    let promise = Post.findByIdAndDelete(id_)
+    let id = req.params.id;
+    
+    let token = req.headers.token;
+    let payload = jwt.decode(token);
+    let id_usuario_logado = payload.id;
 
+    //let promise = Post.findByIdAndDelete(id)
+    let promise = Post.findById(id).exec();
     promise.then(
         function(post){
-            res.status(200).json(ViewPost.render(post))
-        }
-    ).catch(
-        function(error){
-            res.status(400).json({
-                mensagem: "Não foi possivel deletar", error: error
+            //res.status(200).json(ViewPost.render(post))
+            if(post.id_usuario == id_usuario_logado){
+                Post.findByIdAndDelete(id)
+                .then(function(post){
+                    res.status(200).json(ViewPost.render(post));
+                })
+                .cath(function(erro){
+                    res.status(400).json({
+                        mensagem: "Post não encontrado!"
+                    });
+                })
+            }else{
+                res.status(403).json({
+                    mensagem:"Usuario não autorizado!"
+                });
+            }
+        }).catch(
+            function(error){
+                res.status(400).json({
+                    mensagem: "Não foi possivel deletar", error: error
             })
         }
     )

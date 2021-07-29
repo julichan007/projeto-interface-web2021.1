@@ -3,11 +3,16 @@ const ViewsComentario = require("../views/viewsComentarios")
 
 //listar comentarios
 module.exports.listarComentarios =  function(req,res){
-    let promise = Comentario.find().exec();
+    let token = req.headers.token;
+    let payload = jwt.decode(token);
+    let id_usuario_logado = payload.id;
+
+
+    let promise = Comentario.find({id_usuario: id_usuario_logado}).exec();
 
     promise.then(
-        function(comentario){
-            res.status(200).json(ViewsComentario.renderMany(Comentario))
+        function(post){
+            res.status(200).json(ViewsComentario.renderMany(post))
         }  
     ).catch(
         function (error){
@@ -34,7 +39,15 @@ module.exports.buscarComentarios = function(req, res){
 }
 //inserir comentário
 module.exports.inserirComentarios = function(req, res){
-    let promise = Comentario.create(req.body)
+    let texto = req.body.texto;
+    let id_post = req.body.id_post;
+
+    let token = req.headers.token;
+    let payload = jwt.decode(token);
+    let id_usuario_logado = payload.id;
+    
+
+    let promise = Comentario.create({texto: texto, id_post: id_post, id_usuario: id_usuario_logado});
 
     promise.then(
         function(comentario){
@@ -49,19 +62,37 @@ module.exports.inserirComentarios = function(req, res){
     )
 }
 module.exports.deleteComentarios = function(req, res){
-    let id_ = req.params.id
-    let promise = Comentario.findByIdAndDelete(id_)
+    let id = req.params.id;
+    let token = req.headers.token;
+    let payload = jwt.decode(token);
+    let id_usuario_logado = payload.id;
 
+
+    //let promise = Comentario.findByIdAndDelete(id)
+    let promise = Comentario.findById(id).exec();
     promise.then(
         function(comentario){
-            res.status(200).json(ViewsComentario.render(comentario))
-        }
-    ).catch(
-        function(error){
-            res.status(400).json({
-                mensagem: "Não foi possivel deletar o comentario", error: error
-            })
-        }
-    )
+            if(id_usuario_logado == comentario.id_usuario){
+                Comentario.findByIdAndDelete(id).exec()
+                .then(function(comentario){
+                    res.status(200).json(ViewComentario.render(comentario));
+                })
+                .catch(function(erro){
+                    res.status(404).json({
+                          mensagem:" Comentário não encontrado! Tente novamente!"
+                        });
+                    })
+                } else {
+                    res.status(403).json({
+                        mensagem: "Usuario não autorizado!"
+                    });
+                }
+            
+            }).catch(
+                function(error){
+                       res.status(404).json({
+                           mensagem: "Não foi possivel deletar o comentario", error: error
+            });
+        
+    })
 }
-

@@ -1,13 +1,14 @@
-function render(usuario){
+function render( usuario ){
     return{
         id: usuario._id,
         nome: usuario.nome,
-        email: usuario.email
+        email: usuario.email,
+        senha: usuario.senha
     }
 }
 module.exports.render = render;
 
-function renderMany(usuarios){
+function renderMany( usuarios ){
     return usuarios.map(render)
 }
 
