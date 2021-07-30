@@ -13,7 +13,7 @@ module.exports.logar = function(req, res){
                 res.status(401).send("Cadastro não encontrado");
             }
         })
-        .cath(function(error){
+        .catch(function(error){
             res.status(401).send("Cadastro não encontrado");
         })
 }
